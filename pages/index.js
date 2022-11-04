@@ -1,22 +1,37 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
+import { getSortedPostsData } from "../lib/post";
 import utilStyles from "../styles/utils.module.css";
 
-export default function Home() {
+// in development (yarn dev or npm run dev) run when request, but in production only run in buildtime
+// so this function is not recommended to get data dynamicaly, if you want fetch data from server you can use getServerSideProps
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData();
+  return {
+    props: {
+      allPostsData,
+    },
+  };
+}
+
+export default function Home({ allPostsData }) {
   return (
     <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <section className={utilStyles.headingMd}>
-        <p>
-          Hello, I'm Nicolas Catur Pandoyo. i'm Software developer mobile still
-          learn about Software developer fronedn
-        </p>
-        <p>
-          (This is a sample website - you'll be buidling a site like this on{" "}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>)
-        </p>
+      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+        <h2 className={utilStyles.headingLg}>Blog</h2>
+        <ul className={utilStyles.list}>
+          {allPostsData.map((post) => {
+            return (
+              <li className={utilStyles.listItme} key={post.id}>
+                {post.title}
+                <br />
+                {post.id}
+                <br />
+                {post.date}
+              </li>
+            );
+          })}
+        </ul>
       </section>
     </Layout>
   );
