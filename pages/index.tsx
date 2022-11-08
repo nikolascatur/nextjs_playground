@@ -4,18 +4,20 @@ import { getSortedPostsData } from "../lib/post";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 import Date from "../components/date";
+import { GetStaticProps } from "next";
 // in development (yarn dev or npm run dev) run when request, but in production only run in buildtime
 // so this function is not recommended to get data dynamicaly, if you want fetch data from server you can use getServerSideProps
-export async function getStaticProps() {
+// export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = () => {
   const allPostsData = getSortedPostsData();
   return {
     props: {
       allPostsData,
     },
   };
-}
+};
 
-export default function Home({ allPostsData }) {
+function Home({ allPostsData }) {
   return (
     <Layout home>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
@@ -37,3 +39,5 @@ export default function Home({ allPostsData }) {
     </Layout>
   );
 }
+
+export default Home;
