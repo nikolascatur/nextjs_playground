@@ -9,6 +9,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostIds();
   console.log(`PATH LIST => ${paths}`);
+  console.table(paths);
   return {
     paths,
     fallback: false,
@@ -17,6 +18,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // export async function getStaticProps({ params }) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  console.log(params.id);
   const postData = await getPostData(params.id);
   return {
     props: {
